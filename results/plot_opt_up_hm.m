@@ -1,8 +1,6 @@
-%% Plot heatmaps for how optimal uptake varies
+%% Plot heatmaps showing the most cost-effective uptake
 
 blue = customcolormap([0 0.5 1], {'#000000','#76A5DB','#ffffff'});
-%blue = customcolormap([0 0.5 1], {'#000000','#2D9AAD','#ffffff'});
-%blue = customcolormap([0 0.5 1], {'#000000','#B5386C','#ffffff'});
 pink = customcolormap([0 0.5 1], {'#000000','#F26691','#ffffff'});
 orange = customcolormap([0 0.5 1], {'#000000','#EB7D00','#ffffff'});
 green = customcolormap([0 0.5 1], {'#000000','#69C988','#ffffff'});

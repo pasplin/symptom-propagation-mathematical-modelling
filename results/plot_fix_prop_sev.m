@@ -1,4 +1,5 @@
-%% Vig temporal plots
+%% File for creating intervention result figures 
+%% (with nu chosen to fix the proportion of cases that are severe)
 
 %Set the axis font size and line width for all graphs in this code
 set(0,'defaultaxesfontsize',12)
@@ -10,121 +11,116 @@ blue = {[153,204,255]/255,[50, 144,255]/255,[0,76,153]/255};
 purple = {[0.6, 0.4, 0.85],[0.3, 0, 0.5]};
 yellow = {[255,191,0]./255};
 
-N =60287953;
+N =67330000;
 
 int_opts = {'no_int','sb','ib','isb'};
 %int_opts = {'no_int','ib','ib_sev'};
 param_opts = {'sFlu','pFlu','cov'};
 
+%Define runset options
 runset =  [int_opts{2} '_fix_prop_sev_' param_opts{1}];
 run_opts = define_run_opts(runset);
 
+%Maximum number of years to run for
 num_years = 30;
 
+%Willingness-to-pay threshold (£)
 WTP_thresh = 20000;
 
+%Discounting rate
 dis_rate = 0.035;
 
 
-% %Temporal plots
-% for param_itr = 1:length(param_opts)
-%     fig = figure(param_itr);
-%     fig.Units = 'inches';
-%     set(gcf,'units','inch','position',[0,0,10,6])
-%     tlo = tiledlayout(2,4);
-%     tlo.TileSpacing = 'compact';
-%     tlo.Padding = 'compact';
-% 
-%     for up_itr = [6,10]
-%         for int_itr = 1:length(int_opts)
-%         
-%         nexttile(tlo)
-%         if int_itr ==1
-%     
-%             runset =  [int_opts{2} '_fix_prop_sev_' param_opts{param_itr}];
-%             load(['model_output_' runset '.mat'],'I')
-% 
-%             up_itr_tmp = 1;
-%             
-%         else
-%             runset =  [int_opts{int_itr} '_fix_prop_sev_' param_opts{param_itr}];
-%             load(['model_output_' runset '.mat'],'I')
-% 
-%             up_itr_tmp = up_itr;
-%         end
-% 
-%             dur1 = find(squeeze(sum(I(1,1,up_itr_tmp,1,:,:),6))>0.01,1,'last');
-%             dur2 = find(squeeze(sum(I(1,2,up_itr_tmp,1,:,:),6))>0.01,1,'last');
-%             dur = max(dur1,dur2);
-%             dur = min(dur, 4500);
-%             h = plot(1:dur, squeeze(I(1,1,up_itr_tmp,1,1:dur,1)./N), 'Color',yellow{1});
-%             hold on
-%             plot(1:dur, squeeze(I(1,1,up_itr_tmp,1,1:dur,2)./N), 'Color',red{2})
-%             plot(1:dur, squeeze(I(1,2,up_itr_tmp,1,1:dur,1)./N),':', 'Color',yellow{1})
-%             plot(1:dur, squeeze(I(1,2,up_itr_tmp,1,1:dur,2)./N),':', 'Color',red{2})
-% 
-% 
-%             hold off
-% 
-%             if up_itr == 1
-%                 if int_itr == 1
-%                     title({'No intervention' ''})
-%                 elseif int_itr == 2
-%                    title({'SA intervention' ''})
-%                 elseif int_itr == 3
-%                     title({'IB intervention' ''})
-%                 elseif int_itr == 4
-%                     title({'IB\_MB intervention' ''})
-% 
-%                 end
-% 
-%             end
-% 
-%             if int_itr == 4
-%               
-%                 if param_itr == 1
-%                     if up_itr == 1
-%                         label_h = ylabel('Uptake 50%');
-%                         label_h.Position(1) = 225;
-%                     else
-%                         label_h = ylabel('Uptake 90%');
-%                         label_h.Position(1) = 50;
-%                     end
-%                 elseif param_itr == 2
-%                     if up_itr == 1
-%                         label_h = ylabel('Uptake 50%');
-%                         label_h.Position(1) = 800;
-%                     else
-%                         label_h = ylabel('Uptake 90%');
-%                         label_h.Position(1) = 90;
-%                     end
-%                 elseif param_itr == 3
-%                     if up_itr == 1
-%                         label_h = ylabel('Uptake 50%');
-%                         label_h.Position(1) = 1700;
-%                     else
-%                         label_h = ylabel('Uptake 90%');
-%                         label_h.Position(1) = 115;
-%                     end
-%                 end
-% 
-%     
-%             end
-% 
-%         end
-%     end
-% 
-% %     if param_itr == 1
-% %     title(tlo, 'Influenza, R_0 = 1.5')
-% %     elseif param_itr == 2
-% %     title(tlo, 'Influenza, R_0 = 3.0')
-% %     elseif param_itr == 3
-% %     title(tlo, 'SARS-CoV-2, R_0 = 3.0')
-% %     end
-% 
-%         xlabel(tlo, {'Time (days)' ' '})
-% 
-% end
+%%Temporal plots
+for param_itr = 1:length(param_opts)
+    fig = figure(param_itr);
+    fig.Units = 'inches';
+    set(gcf,'units','inch','position',[0,0,10,6])
+    tlo = tiledlayout(2,4);
+    tlo.TileSpacing = 'compact';
+    tlo.Padding = 'compact';
+
+    for up_itr = [6,10]
+        for int_itr = 1:length(int_opts)
+        
+        nexttile(tlo)
+        if int_itr ==1
+    
+            runset =  [int_opts{2} '_fix_prop_sev_' param_opts{param_itr}];
+            load(['model_output_' runset '.mat'],'I')
+
+            up_itr_tmp = 1;
+            
+        else
+            runset =  [int_opts{int_itr} '_fix_prop_sev_' param_opts{param_itr}];
+            load(['model_output_' runset '.mat'],'I')
+
+            up_itr_tmp = up_itr;
+        end
+
+            dur1 = find(squeeze(sum(I(1,1,up_itr_tmp,1,:,:),6))>0.01,1,'last');
+            dur2 = find(squeeze(sum(I(1,2,up_itr_tmp,1,:,:),6))>0.01,1,'last');
+            dur = max(dur1,dur2);
+            dur = min(dur, 4500);
+            h = plot(1:dur, squeeze(I(1,1,up_itr_tmp,1,1:dur,1)./N), 'Color',yellow{1});
+            hold on
+            plot(1:dur, squeeze(I(1,1,up_itr_tmp,1,1:dur,2)./N), 'Color',red{2})
+            plot(1:dur, squeeze(I(1,2,up_itr_tmp,1,1:dur,1)./N),':', 'Color',yellow{1})
+            plot(1:dur, squeeze(I(1,2,up_itr_tmp,1,1:dur,2)./N),':', 'Color',red{2})
+
+
+            hold off
+
+            if up_itr == 1
+                if int_itr == 1
+                    title({'No intervention' ''})
+                elseif int_itr == 2
+                   title({'SA intervention' ''})
+                elseif int_itr == 3
+                    title({'IB intervention' ''})
+                elseif int_itr == 4
+                    title({'IB\_MB intervention' ''})
+
+                end
+
+            end
+
+            if int_itr == 4
+              
+                if param_itr == 1
+                    if up_itr == 1
+                        label_h = ylabel('Uptake 50%');
+                        label_h.Position(1) = 225;
+                    else
+                        label_h = ylabel('Uptake 90%');
+                        label_h.Position(1) = 50;
+                    end
+                elseif param_itr == 2
+                    if up_itr == 1
+                        label_h = ylabel('Uptake 50%');
+                        label_h.Position(1) = 800;
+                    else
+                        label_h = ylabel('Uptake 90%');
+                        label_h.Position(1) = 90;
+                    end
+                elseif param_itr == 3
+                    if up_itr == 1
+                        label_h = ylabel('Uptake 50%');
+                        label_h.Position(1) = 1700;
+                    else
+                        label_h = ylabel('Uptake 90%');
+                        label_h.Position(1) = 115;
+                    end
+                end
+
+    
+            end
+
+        end
+    end
+        xlabel(tlo, {'Time (days)' ' '})
+
+end
  
 figure(1)
 L=legend('Mild', 'Severe','Orientation','horizontal','box','off');
@@ -145,7 +141,7 @@ newUnits = 'inch';
 set(L,'Position', newPosition,'Units', newUnits);
 
 
-%% Create arrays for bar plots
+%% Initialise figures and create arrays for bar plots
 figure(4)
 tlo1 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])
@@ -160,25 +156,25 @@ tlo2.Padding = 'compact';
 
 up_opts = [0.5,0.9];
 
+%Initialise arrays
 tot_inf_array = zeros(length(int_opts), 2,length(param_opts),2);
 peak_inf_array = zeros(length(int_opts), 2,length(param_opts),2,2);
 peak_time_array = zeros(length(int_opts), 2,length(param_opts),2);
 dur_array = zeros(length(int_opts), 2,length(param_opts),2);
-
 TIC_array = zeros(length(int_opts)-1, 2,length(param_opts),length(run_opts{3}));
 sev_inf_array = zeros(length(int_opts)-1, 2,length(param_opts),length(run_opts{3}));
-
 compart_array = zeros(length(int_opts), 2,length(param_opts),2,4);
 
+%Populate arrays from data file
 for param_itr = 1:length(param_opts)
     for up_itr = 1:2
         for alpha_itr = 1:length(run_opts{2})
             for int_itr = 1:length(int_opts)
     
-                if int_itr == 1
+                if int_itr == 1 %If in no intervention case, take data from SA intervention with uptake = 0%
+                    
                     runset =  [int_opts{2} '_fix_prop_sev_' param_opts{param_itr}];
                     load(['model_output_' runset '.mat'],'S','V','I','R')
-
 
                     s = sum(R(1,alpha_itr, 1,1,:,:),6);
                     ind = find(s>0,1,'last');
@@ -224,21 +220,20 @@ for param_itr = 1:length(param_opts)
 
                   
                 end
-
-
             end
         end
     end
 end
 
-%% Calculate TIC
+%% Calculate threshold unit intervention costs
 
 for param_itr = 1:length(param_opts)
     for int_itr = 2:length(int_opts)
+
         runset =  [int_opts{int_itr} '_fix_prop_sev_' param_opts{param_itr}];
         load(['model_output_' runset '.mat'],'S','V','I','R')
+
         for alpha_itr = 1:length(run_opts{2})
-        
             for up_itr = 1:length(run_opts{3})
 
                 s = sum(R(1,alpha_itr, up_itr,1,:,:),6);
@@ -285,7 +280,6 @@ end
 %% Create arrays for bar plots - compartments
 
 for param_itr = 1:length(param_opts)
-%% Plot bars 
 for up_itr = 1:2
     nexttile(tlo2,param_itr+(up_itr-1)*3)
 
@@ -294,20 +288,28 @@ for up_itr = 1:2
     NumStackElements = 4;
     
     % labels to use on tick marks for groups
-    %groupLabels = {'No','SA' 'IB','IB\_MB'};
-    groupLabels = {'No','IB','IB\_S'};
+    groupLabels = {'No','SA' 'IB','IB\_MB'};
+    %groupLabels = {'No','IB','IB\_S'};
 
     h = plotBarStackGroups(compart_array(:,:,param_itr,up_itr,:)./N, groupLabels);
 
     box on
-    set(h(:,1),'FaceColor', red{2})
-    set(h(:,2),'FaceColor', yellow{1})
-    set(h(:,3),'FaceColor', blue{1})
+    
+    %Set colours and hatching
+    set(h(1,1),'FaceColor', red{2},'FaceAlpha',0.2)
+    hatchfill2(h(1,1),'single','HatchAngle',-45,'hatchcolor',red{2},'HatchLineWidth',1.5)
+    set(h(2,1),'FaceColor', red{2})
+    set(h(1,2),'FaceColor', yellow{1},'FaceAlpha',0.2)
+    hatchfill2(h(1,2),'single','HatchAngle',-45,'hatchcolor',yellow{1},'HatchLineWidth',1.5)
+    set(h(2,2),'FaceColor', yellow{1})
+    set(h(1,3),'FaceColor', blue{1},'FaceAlpha',0.2)
+    hatchfill2(h(1,3),'single','HatchAngle',-45,'hatchcolor',blue{1},'HatchLineWidth',1.5)
+    set(h(2,3),'FaceColor', blue{1})
     set(h(:,4),'FaceColor', 'none')
-
+    
     ylim([0 1])
-%     set(gca, 'XTickLabel', {'No','SB' 'IB','ISB'})
 
+    %Axis labels and titles
     if param_itr == 1
         ylabel('Proportion of population')
     end
@@ -315,7 +317,7 @@ for up_itr = 1:2
     if up_itr == 1
         if param_itr == 1
            title({'Seasonal Influenza'})
-           
+          
         elseif param_itr == 2
             title({'Pandemic Influenza'})
         else 
@@ -333,15 +335,16 @@ end
 
 end
 
-figure(5)
-L=legend('R_S','R_M','V','S','Orientation','horizontal','FontSize',12);
-newPosition = [0.36 0.3 0.38 0.05];
-newUnits = 'inch';
-set(L,'Position', newPosition,'Units', newUnits);
-legend boxoff
+%% Legend moved to separate file legend_creation.m
+% L=legend('R_S','','R_M','','V','','S','R_S','R_M','V','S','Orientation','horizontal','FontSize',12,'NumColumns',4);
+% newPosition = [0.36 0.3 0.38 0.05];
+% newUnits = 'inch';
+% set(L,'Position', newPosition,'Units', newUnits);
+%legend boxoff
+%[legend_h,object_h,plot_h,text_str] = legendflex(h(2,:),Legend,'FontSize',12,'orientation','horizontal','nrow',2,'anchor',[7,5],'buffer',[-10,0],'box','off');
 
 
-%% Create arrays for bar plots - TIC
+%% Create arrays for bar plots - Threshold unit intervention cost
 figure(6)
 tlo3 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])
@@ -349,7 +352,6 @@ tlo3.TileSpacing = 'compact';
 tlo3.Padding = 'compact';
 
 for param_itr = 1:length(param_opts)
-%% Plot bars 
 for up_itr = 1:2
     nexttile(tlo3,param_itr+(up_itr-1)*3)
 
@@ -363,15 +365,16 @@ for up_itr = 1:2
 
     b = bar(TIC_array(:,:,param_itr,up_itr_tmp)./m);
     b(1).FaceColor = purple{1};
-    b(2).FaceColor = 'none';
-    b(2).EdgeColor = purple{1};
-    b(2).LineWidth = 1.5;
-    %candystripe(b(2),'Color','w','Units','native','width',1);
-    %set(gca, 'XTickLabel', {'SA' 'IB','IB\_MB'})
-    set(gca, 'XTickLabel', {'IB','IB\_S'})
+    b(1).FaceAlpha = 0.2;
+    b(2).FaceColor = purple{1};
+    hatchfill2(b(1),'single','HatchAngle',-45,'hatchcolor',purple{1},'HatchLineWidth',1.5)
+   
+    set(gca, 'XTickLabel', {'SA' 'IB','IB\_MB'})
+    %set(gca, 'XTickLabel', {'IB','IB\_S'})
 
     ylim([0 1.05])
-    %ytickformat('£%,.0f')
+
+    %Axis labels and titles
     if param_itr == 3
         if up_itr == 1
             label_h = ylabel('Uptake 50%','Rotation',-90,'FontWeight','bold');
@@ -383,7 +386,11 @@ for up_itr = 1:2
         label_h.Position(1) = 2.5; % change horizontal position of ylabel
     elseif param_itr == 1
         label_h = ylabel('Threshold intervention cost');
-        if up_itr == 2
+        if up_itr == 1
+%             Legend = {'\alpha=0.2','\alpha=0.8'};
+%             [legend_h,object_h,plot_h,text_str] = legendflex(b,Legend);
+            %,'FontSize',12);%,'anchor',[1,1],'buffer',[10, -15],'box','off');
+            %hatchfill2(object_h(3),'single','HatchAngle',-45,'hatchcolor',purple{1},'HatchLineWidth',1.5)
         %label_h.Position(1) = -0.27; % change horizontal position of ylabel
         end
         
@@ -401,8 +408,7 @@ for up_itr = 1:2
 end
 end
 
-
-%% Create arrays for bar plots - time to peak
+%% Create arrays for bar plots - duration
 figure(7)
 tlo7 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])
@@ -410,17 +416,18 @@ tlo7.TileSpacing = 'compact';
 tlo7.Padding = 'compact';
 
 for param_itr = 1:length(param_opts)
-%% Plot bars 
 for up_itr = 1:2
     nexttile(tlo7,param_itr+(up_itr-1)*3)
 
     
 
     b = bar(dur_array(:,:,param_itr,up_itr));
-    b(1).FaceColor = 'k';
-    b(2).FaceColor = 'none';
-    b(2).EdgeColor = 'k';
-    b(2).LineWidth = 1.5;
+    color = 'k';
+    b(1).FaceColor = color;
+    b(1).FaceAlpha = 0.2;
+    b(2).FaceColor = color;
+    hatchfill2(b(1),'single','HatchAngle',-45,'hatchcolor',color,'HatchLineWidth',1.5)
+
     %candystripe(b(2),'Color','w','Units','native','width',1);
     set(gca, 'XTickLabel', {'No','SA' 'IB','IB\_MB'})
 
@@ -460,7 +467,6 @@ tlo8.TileSpacing = 'compact';
 tlo8.Padding = 'compact';
 
 for param_itr = 1:length(param_opts)
-%% Plot bars 
 for up_itr = 1:2
     nexttile(tlo8,param_itr+(up_itr-1)*3)
 
@@ -473,8 +479,13 @@ for up_itr = 1:2
 
     h = plotBarStackGroups(peak_inf_array(:,:,param_itr,up_itr,:)./N, groupLabels);
 
-    set(h(:,1),'FaceColor', red{2})
-    set(h(:,2),'FaceColor', yellow{1})
+    set(h(1,1),'FaceColor', red{2},'FaceAlpha',0.2)
+    hatchfill2(h(1,1),'single','HatchAngle',-45,'hatchcolor',red{2},'HatchLineWidth',1.5)
+    set(h(2,1),'FaceColor', red{2})
+    set(h(1,2),'FaceColor', yellow{1},'FaceAlpha',0.2)
+    hatchfill2(h(1,2),'single','HatchAngle',-45,'hatchcolor',yellow{1},'HatchLineWidth',1.5)
+    set(h(2,2),'FaceColor', yellow{1})
+   
 
     box on
    
@@ -514,69 +525,66 @@ newUnits = 'inch';
 set(L,'Position', newPosition,'Units', newUnits);
 
 legend boxoff
-% 
-% %% TIC vs uptake plots
-% figure(9)
-% tlo9 = tiledlayout(3,3);
-% set(gcf,'units','inch','position',[0,0,10,9])
-% tlo9.TileSpacing = 'compact';
-% tlo9.Padding = 'compact';
-% 
-% 
-% for param_itr = 1:length(param_opts)
-%     for int_itr = 2:length(int_opts)
-%         nexttile(tlo9)
-% 
-%             m = max(TIC_array(:,:,param_itr,:),[],"all");
-% 
-%             plot(run_opts{3}(2:end),squeeze(TIC_array(int_itr-1, 1, param_itr, 2:end))./m,'Color',purple{2})
-%             hold on
-%             plot(run_opts{3}(2:end),squeeze(TIC_array(int_itr-1, 2, param_itr, 2:end))./m,'Color',purple{1},'LineStyle','--')
-%             hold off
-% 
-%             legend('\alpha=0.2','\alpha=0.8','Location','southeast')
-%         
-% 
-%             ylim([0 1.05])
-% %         if param_itr == 3
-% %             ylim([0 6000])
-% %         else
-% %             ylim([0 1500])
-% %         end
-%             %ytickformat('£%,.0f')
-%             xticklabels({'0%','50%','100%'})
-%             xlabel('Uptake')
-% 
-%             if int_itr == 2
-%                 ylabel('Threshold intervention cost')
-%             end
-%         
-%             if param_itr == 1
-%                 if int_itr == 2
-%                    title({'Symptom-attenuating' ''})
-%                    
-%                 elseif int_itr == 3
-%                     title({'Infection-blocking' ''})
-%                 elseif int_itr == 4
-%                     title({'Infection-blocking' '(mild breakthroughs)'})
-%                     label_h = ylabel('Seasonal Influenza','Rotation',-90,'FontWeight','bold');
-%                     label_h.Position(1) = 1.05;
-%                 end
-% 
-%             else
-%                 if int_itr == 4
-%                     if param_itr == 2
-%                         label_h = ylabel('Pandemic Influenza','Rotation',-90,'FontWeight','bold');
-%                     elseif param_itr == 3
-%                         label_h = ylabel('SARS-CoV-2','Rotation',-90,'FontWeight','bold');
-%                     end
-%                     label_h.Position(1) = 1.05;
-%                 end
-%             end
-%     end
-% end
-% 
-% %% Severe cases prevented vs uptake plots
+
+%% TIC vs uptake plots
+figure(9)
+tlo9 = tiledlayout(3,3);
+set(gcf,'units','inch','position',[0,0,10,9])
+tlo9.TileSpacing = 'compact';
+tlo9.Padding = 'compact';
+
+
+for param_itr = 1:length(param_opts)
+    for int_itr = 2:length(int_opts)
+        nexttile(tlo9)
+
+            m = max(TIC_array(:,:,param_itr,:),[],"all");
+
+            plot(run_opts{3}(2:end),squeeze(TIC_array(int_itr-1, 1, param_itr, 2:end))./m,'Color',purple{1},'LineStyle','--')
+            hold on
+            plot(run_opts{3}(2:end),squeeze(TIC_array(int_itr-1, 2, param_itr, 2:end))./m,'Color',purple{2})
+
+            hold off
+
+            if param_itr == 1 && int_itr == 4
+                legend('\alpha=0.2','\alpha=0.8','Location','northeast')
+            end
+        
+
+            ylim([0 1.05])
+            xticklabels({'0%','50%','100%'})
+            xlabel('Uptake')
+
+            if int_itr == 2
+                ylabel('Threshold intervention cost')
+            end
+        
+            if param_itr == 1
+                if int_itr == 2
+                   title({'Symptom-attenuating' ''})
+                   
+                elseif int_itr == 3
+                    title({'Infection-blocking' ''})
+                elseif int_itr == 4
+                    title({'Infection-blocking' '(mild breakthroughs)'})
+                    label_h = ylabel('Seasonal Influenza','Rotation',-90,'FontWeight','bold');
+                    label_h.Position(1) = 1.05;
+                end
+
+            else
+                if int_itr == 4
+                    if param_itr == 2
+                        label_h = ylabel('Pandemic Influenza','Rotation',-90,'FontWeight','bold');
+                    elseif param_itr == 3
+                        label_h = ylabel('SARS-CoV-2','Rotation',-90,'FontWeight','bold');
+                    end
+                    label_h.Position(1) = 1.05;
+                end
+            end
+    end
+end
+
+%% Severe cases prevented vs uptake plots
 % figure(10)
 % tlo10 = tiledlayout(3,3);
 % set(gcf,'units','inch','position',[0,0,10,9])
@@ -627,8 +635,9 @@ legend boxoff
 %             end
 %     end
 % end
-            
+%             
 
+%% Function to calculate health economic outputs from data file in order to generate TICs
 function [QALYs, hosp_cost] = Calc_HE(inf_array, dis_rate,num_years, param_itr)
 
     if param_itr == 1 || param_itr == 2

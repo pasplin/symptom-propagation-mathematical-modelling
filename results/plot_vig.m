@@ -330,11 +330,16 @@ for up_itr = 1:2
     h = plotBarStackGroups(compart_array(:,:,param_itr,up_itr,:)./N, groupLabels);
 
     box on
-    set(h(:,1),'FaceColor', red{2})
-    set(h(:,2),'FaceColor', yellow{1})
-    set(h(:,3),'FaceColor', blue{1})
+    set(h(1,1),'FaceColor', red{2},'FaceAlpha',0.2)
+    hatchfill2(h(1,1),'single','HatchAngle',-45,'hatchcolor',red{2},'HatchLineWidth',1.5)
+    set(h(2,1),'FaceColor', red{2})
+    set(h(1,2),'FaceColor', yellow{1},'FaceAlpha',0.2)
+    hatchfill2(h(1,2),'single','HatchAngle',-45,'hatchcolor',yellow{1},'HatchLineWidth',1.5)
+    set(h(2,2),'FaceColor', yellow{1})
+    set(h(1,3),'FaceColor', blue{1},'FaceAlpha',0.2)
+    hatchfill2(h(1,3),'single','HatchAngle',-45,'hatchcolor',blue{1},'HatchLineWidth',1.5)
+    set(h(2,3),'FaceColor', blue{1})
     set(h(:,4),'FaceColor', 'none')
-
     ylim([0 1])
 %     set(gca, 'XTickLabel', {'No','SB' 'IB','ISB'})
 
@@ -379,10 +384,10 @@ for up_itr = 1:2
     nexttile(tlo3,param_itr+(up_itr-1)*3)
 
     b = bar(TIC_array(:,:,param_itr,up_itr)./m);
-    b(1).FaceColor = purple{1};
-    b(2).FaceColor = 'none';
-    b(2).EdgeColor = purple{1};
-    b(2).LineWidth = 1.5;
+     b(1).FaceColor = purple{1};
+    b(1).FaceAlpha = 0.2;
+    b(2).FaceColor = purple{1};
+    hatchfill2(b(1),'single','HatchAngle',-45,'hatchcolor',purple{1},'HatchLineWidth',1.5)
     %candystripe(b(2),'Color','w','Units','native','width',1);
     set(gca, 'XTickLabel', {'SA' 'IB','IB\_MB'})
 
@@ -522,12 +527,12 @@ tlo8.Padding = 'compact';
 % end
 
 figure(5)
-L=legend('R_S','R_M','V','S','Orientation','horizontal','FontSize',12);
-newPosition = [0.36 0.3 0.38 0.05];
-newUnits = 'inch';
-set(L,'Position', newPosition,'Units', newUnits);
-
-legend boxoff
+% L=legend('R_S','R_M','V','S','Orientation','horizontal','FontSize',12);
+% newPosition = [0.36 0.3 0.38 0.05];
+% newUnits = 'inch';
+% set(L,'Position', newPosition,'Units', newUnits);
+% 
+% legend boxoff
 
 function [QALYs, hosp_cost] = Calc_HE(inf_array, dis_rate,num_years, param_itr)
 

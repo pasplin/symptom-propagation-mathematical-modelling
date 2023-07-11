@@ -54,7 +54,7 @@ set(0,'defaultlinelinewidth',2.5)
 %runset = 'ib_int';
 %runset = 'ib_int_fix_a_v_flu_1.5';
 %runset = 'ib_int_fix_a_v_flu_3';
-runset = 'ib_int_fix_a_v_cov_3';
+%runset = 'ib_int_fix_a_v_cov_3';
 
 %runset = 'ib_int_find_opt_up_flu_1.5';
 %runset = 'ib_int_find_opt_up_flu_3.0';
