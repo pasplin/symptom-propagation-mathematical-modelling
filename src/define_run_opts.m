@@ -7,10 +7,13 @@ Input:
 - runset: The name of the chosen runset
 
 Output:
-- run_opts{1}: An array containing values for the fixed parameter. For each
-value in this array the model will be run length(run_opts{2}) times
-- run_opts{2}: An array containing values for the parameter that is varied
-during each set of runs.
+- run_opts{1}: An array containing values for the fixed parameter, usually
+nu
+- run_opts{2}: An array containing the values that alpha takes
+- run_opts{3}: An array containing intervention efficacy options (if
+relevent)
+- run_opts{4}: An array containing intervention uptake options (if
+relevent)
 %}
 function run_opts = define_run_opts(runset)
 
@@ -21,7 +24,7 @@ if contains(runset, 'fix_prop_sev')
     run_opts{3} = 0:0.01:1;%[0,0.5,0.9];
 
     %Intervention efficacy
-    run_opts{4} = [0.9];
+    run_opts{4} = [0.7];
 
     %Values that alpha take
     run_opts{2} = [0.2, 0.8];

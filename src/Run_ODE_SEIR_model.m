@@ -1,8 +1,7 @@
 clear
-%% Script for running ODE model
+%% Script for running ODE model (no interventions)
 
-% Set the runset for the model
-%runset = 'change_alpha'; %Change alpha for the default parameters
+%% Set the runset for the model
 %runsets = {'no_int_flu_1.5','no_int_flu_3.0','no_int_cov_3.0'};
 runsets = {'no_int_flu_1.5_100','no_int_flu_3.0_100','no_int_cov_3.0_100'};
 

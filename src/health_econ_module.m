@@ -1,17 +1,24 @@
 
 %{
-define_run_opts(runset)
+health_econ_module(runset)
 
-A function for defining the run options for each run set
+A function that calculates the health economic outputs from the data set
 
 Input:
 - runset: The name of the chosen runset
 
 Output:
-- run_opts{1}: An array containing values for the fixed parameter. For each
-value in this array the model will be run length(run_opts{2}) times
-- run_opts{2}: An array containing values for the parameter that is varied
-during each set of runs.
+- tot_hosp_prev: Total hospitalisations prevented
+- tot_inf_prev: Total infections prevented
+- thresh_int_cost: Threshold unit intervention cost
+- tot_sev_prev: Total severe cases prevented
+- prop_hosp_prev: Proportion of hospitalisations prevented
+- prop_inf_prev: Proportion of infections prevented
+- prop_sev_prev: Proportion of severe infections prevented
+- QALYs_prev_dis: QALYs prevented (discounted)
+- hosp_cost_prev_dis: Hospital costs prevented (discounted)
+- QALYs_dis: Total QALYs (discounted)
+- hosp_cost_dis: Total hospital costs (discounted)
 %}
 function [tot_hosp_prev, tot_inf_prev, thresh_int_cost, tot_sev_prev, prop_hosp_prev, prop_inf_prev, prop_sev_prev, QALYs_prev_dis, hosp_cost_prev_dis, QALYs_dis, hosp_cost_dis] = health_econ_module(runset)
 

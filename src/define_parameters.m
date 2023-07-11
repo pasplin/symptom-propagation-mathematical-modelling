@@ -44,7 +44,7 @@ if n_age_class == 3
     para.pop_vec = [13214952; 34280781; 12792220];
 elseif n_age_class == 1
     para.cont_matrix = 1;
-    para.pop_vec = 60287953;
+    para.pop_vec = 67330000; %UK population
 end
 
 %% Define the default parameters
@@ -155,7 +155,7 @@ elseif strcmp(runset,'sb_int') || strcmp(runset,'sb_int_fix_a_v')|| strcmp(runse
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 
 %% Flu, R0 = 3
-elseif strcmp(runset, 'sb_vig_flu_3.0')||strcmp(runset, 'ib_vig_flu_3.0')||strcmp(runset, 'isb_vig_flu_3.0') || strcmp(runset, 'sb_int_find_opt_up_flu_3.0')|| strcmp(runset, 'isb_test') || strcmp(runset, 'ib_int_find_opt_up_flu_3.0') || strcmp(runset, 'isb_int_find_opt_up_flu_3.0')
+elseif contains(runset, 'vig_flu_3.0') || contains(runset, 'find_opt_up_flu_3.0')
     R0 = 3.0; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 2;
@@ -175,7 +175,7 @@ elseif strcmp(runset, 'sb_vig_flu_3.0')||strcmp(runset, 'ib_vig_flu_3.0')||strcm
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 %% Flu, R0 = 1.5
-elseif strcmp(runset, 'sb_vig_flu_1.5')||strcmp(runset, 'ib_vig_flu_1.5')||strcmp(runset, 'isb_vig_flu_1.5')||strcmp(runset, 'sb_int_find_opt_up_flu_1.5') || strcmp(runset, 'isb_test_duration') || strcmp(runset, 'ib_int_find_opt_up_flu_1.5')|| strcmp(runset, 'isb_int_find_opt_up_flu_1.5') || strcmp(runset, 'ib_int_fix_a_v_flu_1.5')
+elseif contains(runset, 'vig_flu_1.5') || contains(runset, 'find_opt_up_flu_1.5')
     R0 = 1.5; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 2;
@@ -195,7 +195,7 @@ elseif strcmp(runset, 'sb_vig_flu_1.5')||strcmp(runset, 'ib_vig_flu_1.5')||strcm
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 %% Cov, R0 = 3
-elseif strcmp(runset, 'sb_vig_cov_3.0')||strcmp(runset, 'ib_vig_cov_3.0')||strcmp(runset, 'isb_vig_cov_3.0')||strcmp(runset,'sb_int_fix_a_v_covid') || strcmp(runset, 'sb_int_find_opt_up_cov_3.0') || strcmp(runset, 'ib_int_find_opt_up_cov_3.0')|| strcmp(runset, 'isb_int_find_opt_up_cov_3.0') || strcmp(runset, 'ib_int_fix_a_v_cov_3')
+elseif contains(runset, 'vig_cov_3.0') || contains(runset, 'find_opt_up_cov_3.0')
     R0 = 3.0;%2.4; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 4;
@@ -343,121 +343,6 @@ elseif strcmp(runset,'no_int_cov_3.0_100')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'change_alpha')
-
-    if n_severity ~= 2
-        error('The runset change_alpha requires there to be only two severity levels')
-    end
-
-    %Set betaM to chosen value
-    beta_mild = fixed_val;
-
-    %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_mild,2*beta_mild];
-
-    %Dependence on severity of infector (1=independent, 0=fully dependent)
-    para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
-
-elseif strcmp(runset,'fix_R02') 
-
-    if n_severity ~= 2
-        error('The runset fix_R02 requires there to be only two severity levels')
-    end
-    
-    ratio = 2;
-
-    %Get the value of R0 for this runset
-    fixed_R0 = run_opts{2}(opts_itr);
-
-    %Value of alpha for this run
-    para(opts_itr).alpha = fixed_val*ones(n_severity,1);
-    
-    %Calulate the value of beta required to give the fixed value of R0
-    %(function is at the end of this script)
-    beta_mild = calculate_beta(para(opts_itr).gamma(1),para(opts_itr).gamma(2),para(opts_itr).nu(1,2),para(opts_itr).alpha(1), fixed_R0,ratio);
-    
-    %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'fix_gammaS') 
-
-    if n_severity ~= 2
-        error('The runset fix_gammaS requires there to be only two severity levels')
-    end
-    
-    ratio = 2;
-
-    para(opts_itr).nu=ones(para.n_age_class,1)*[0.8,0.2];
-
-    %Get the value of R0 for this runset
-    fixed_R0 = 1.1;
-    
-    %para(opts_itr).gamma=[1/5,1/5];
-    para(opts_itr).gamma(2)=fixed_val;
-
-    %Value of alpha for this run
-    para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
-    
-    %Calulate the value of beta required to give the fixed value of R0
-    %(function is at the end of this script)
-    beta_mild = calculate_beta(para(opts_itr).gamma(1),para(opts_itr).gamma(2),para(opts_itr).nu(1,2),para(opts_itr).alpha(1), fixed_R0,ratio);
-    
-    %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'fix_ratio') 
-
-    if n_severity ~= 2
-        error('The runset fix_ratio requires there to be only two severity levels')
-    end
-    
-    ratio = fixed_val;
-
-    para(opts_itr).nu=ones(para.n_age_class,1)*[0.8,0.2];
-
-    %Get the value of R0 for this runset
-    fixed_R0 = 3.0;
-    
-    para(opts_itr).gamma=[1/5,1/5];
-
-    %Value of alpha for this run
-    para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
-    
-    %Calulate the value of beta required to give the fixed value of R0
-    %(function is at the end of this script)
-    beta_mild = calculate_beta(para(opts_itr).gamma(1),para(opts_itr).gamma(2),para(opts_itr).nu(1,2),para(opts_itr).alpha(1), fixed_R0,ratio);
-    
-    %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-
-elseif strcmp(runset,'change_ratio')
-
-    if n_severity ~= 2
-        error('The runset change_ratio requires there to be only two severity levels')
-    end
-
-    %Age-dependent probability of symptoms 
-    para(opts_itr).nu = ones(para.n_age_class,1)*[0.5,0.5];
-    
-    %Severity dependent recovery rates
-    para(opts_itr).gamma = [1/5, 1/5];
-
-    %Value of alpha for this run
-    para(opts_itr).alpha = 0*ones(n_severity,1);
-
-    fixed_R0 = fixed_val;
-
-    ratio = run_opts{2}(opts_itr);
-    
-    %Calulate the value of beta required to give the fixed value of R0
-    %(function is at the end of this script)
-    beta_mild = calculate_beta(para(opts_itr).gamma(1),para(opts_itr).gamma(2),para(opts_itr).nu(1,2),para(opts_itr).alpha(1), fixed_R0,ratio);
-    
-    %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_mild,run_opts{2}(opts_itr)*beta_mild];
-
-elseif strcmp(runset,'single_run')
-
-    %Dependence on severity of infector (1=independent, 0=fully dependent)
-    para.alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
     
 end  
 

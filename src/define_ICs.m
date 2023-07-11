@@ -33,21 +33,4 @@ S0 = p.pop_vec-sum(E0,2)-sum(I0,2)-sum(R0,2);
 %Define initial conditions as a structure
 ICs = struct('S',S0,'E',E0,'I',I0,'R',R0);
 
-
-% %Initialise initial conditions arrays
-% E0 = zeros(para(opts_itr).n_age_class, para(opts_itr).n_severity);
-% I0 = zeros(para(opts_itr).n_age_class, para(opts_itr).n_severity);
-% R0 = zeros(para(opts_itr).n_age_class, para(opts_itr).n_severity);
-% 
-% %Set up index patient(s)
-% for ii = 1:length(init_sev)
-%     I0(1, init_sev(ii)) = 1;
-% end
-% 
-% %Set the remaining population to susceptible
-% S0 = para(opts_itr).pop_vec-sum(E0,2)-sum(I0,2)-sum(R0,2);
-% 
-% %Define initial conditions as a structure
-% ICs = struct('S',S0,'E',E0,'I',I0,'R',R0);
-
 end

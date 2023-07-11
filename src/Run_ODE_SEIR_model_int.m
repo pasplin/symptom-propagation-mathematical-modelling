@@ -1,6 +1,7 @@
 function Run_ODE_SEIR_model_int(job_ID)
 
 %% Script for running ODE model with interventions
+%Used to generate data for where nu is fixed (supplementary plots)
 
 tic
 

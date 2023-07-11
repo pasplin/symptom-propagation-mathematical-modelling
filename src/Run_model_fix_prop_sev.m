@@ -1,6 +1,7 @@
 function Run_model_fix_prop_sev(int_itr,param_itr)
 
-%% Script for running ODE model with interventions
+%% Script for running ODE model with interventions 
+% Here nu is chosen to fix the proportion of cases that are severe
 
 tic
 
