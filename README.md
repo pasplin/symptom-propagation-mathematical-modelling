@@ -1,7 +1,7 @@
 # symptom-propagation-mathematical-modelling
 This repository contains files for the analysis presented in the scientific paper "Epidemiological and health economic implications of symptom propagation: A mathematical modelling investigation" by Phoebe Asplin, Matt J. Keeling, Rebecca Mancy and Edward M. Hill. 
 
-DOI: 10.5281/zenodo.8136533
+[![DOI](https://zenodo.org/badge/643822738.svg)](https://zenodo.org/badge/latestdoi/643822738)
 
 ## Software
 Model simulations and figure generation were performed using Matlab R2022a.
