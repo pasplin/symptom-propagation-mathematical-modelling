@@ -13,6 +13,7 @@ Please find below an explainer of the directory structure within this repository
 * Run_ODE_SEIR_model: Runs ODE model for each of the run options (no interventions & fixed value of nu)
 * Run_ODE_SEIR_model_int: Runs ODE model for each of the run options (interventions & fixed value of nu)
 * Run_model_fix_prop_sev: Runs ODE model for each of the run options (interventions & fixed proportion of cases that are severe)
+
 These scripts call the following functions:
 * define_run_opts: Defines the run options for each runset
 * define_parameters: Defines parameters for a given runset
