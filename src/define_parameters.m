@@ -54,22 +54,10 @@ if n_severity == 2
     para.beta = [beta_mild,2*beta_mild];
     
     %Age-dependent probability of symptoms 
-    %para.nu = ones(para.n_age_class,1)*[0.8,0.2];
-    %para.nu = ones(para.n_age_class,1)*[0.2,0.8];
     para.nu = [0.8, 0.2];
 
     %Severity dependent recovery rates
     para.gamma = [1/5, 1/7];
-    %para.gamma = [1/2, 1/10];
-elseif n_severity == 3
-    %Severity dependent transmission rates
-    para.beta = [0.2,0.4,0.5];
-    
-    %Age-dependent probability of symptoms 
-    para.nu = ones(para.n_age_class,1)*[0.5, 0.3, 0.2];
-    
-    %Severity dependent recovery rates
-    para.gamma = [0.2, 0.2, 0.2];
 else
     %Severity dependent transmission rates
     para.beta = 0.3*ones(n_severity,1);
@@ -84,7 +72,7 @@ end
 %Rate of becoming infectious
 para.epsilon = 1/2;
 
-%Dependence on severity of infector (1=independent, 0=fully dependent)
+%Dependence on severity of infector (0=independent, 1=fully dependent)
 para.alpha = 0.5*ones(n_severity,1);
 
 
@@ -155,7 +143,7 @@ elseif strcmp(runset,'sb_int') || strcmp(runset,'sb_int_fix_a_v')|| strcmp(runse
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 
 %% Flu, R0 = 3
-elseif contains(runset, 'vig_flu_3.0') || contains(runset, 'find_opt_up_flu_3.0')
+elseif contains(runset, 'vig_pFlu') || contains(runset, 'find_opt_up_pFlu')
     R0 = 3.0; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 2;
@@ -175,7 +163,7 @@ elseif contains(runset, 'vig_flu_3.0') || contains(runset, 'find_opt_up_flu_3.0'
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 %% Flu, R0 = 1.5
-elseif contains(runset, 'vig_flu_1.5') || contains(runset, 'find_opt_up_flu_1.5')
+elseif contains(runset, 'vig_sFlu') || contains(runset, 'find_opt_up_sFlu')
     R0 = 1.5; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 2;
@@ -195,7 +183,7 @@ elseif contains(runset, 'vig_flu_1.5') || contains(runset, 'find_opt_up_flu_1.5'
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
 %% Cov, R0 = 3
-elseif contains(runset, 'vig_cov_3.0') || contains(runset, 'find_opt_up_cov_3.0')
+elseif contains(runset, 'vig_cov') || contains(runset, 'find_opt_up_cov')
     R0 = 3.0;%2.4; %Value of R0 that will be fixed in the no intervention case for each set of parameters
 
     ratio = 4;
@@ -216,15 +204,12 @@ elseif contains(runset, 'vig_cov_3.0') || contains(runset, 'find_opt_up_cov_3.0'
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'no_int_flu_1.5') || strcmp(runset,'no_int_flu_3.0')
-    if n_severity ~= 2
-        error('The runset fix_R0 requires there to be only two severity levels')
-    end
+elseif strcmp(runset,'no_int_sFlu') || strcmp(runset,'no_int_pFlu')
     
     ratio = 2;
     para(opts_itr).gamma=[1/5 1/7];
 
-    nu = fixed_val;
+    nu = 0.2;%fixed_val;
     para(opts_itr).nu = [1-nu, nu];
 
     %Get the value of R0 for this runset
@@ -239,7 +224,7 @@ elseif strcmp(runset,'no_int_flu_1.5') || strcmp(runset,'no_int_flu_3.0')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'no_int_cov_3.0')
+elseif strcmp(runset,'no_int_cov')
 
     if n_severity ~= 2
         error('The runset fix_R0 requires there to be only two severity levels')
@@ -265,7 +250,7 @@ elseif strcmp(runset,'no_int_cov_3.0')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'no_int_flu_1.5_100')
+elseif strcmp(runset,'no_int_sFlu_100')
 
     if n_severity ~= 2
         error('The runset fix_R0 requires there to be only two severity levels')
@@ -291,7 +276,7 @@ elseif strcmp(runset,'no_int_flu_1.5_100')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'no_int_flu_3.0_100')
+elseif strcmp(runset,'no_int_pFlu_100')
 
     if n_severity ~= 2
         error('The runset fix_R0 requires there to be only two severity levels')
@@ -317,7 +302,7 @@ elseif strcmp(runset,'no_int_flu_3.0_100')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
-elseif strcmp(runset,'no_int_cov_3.0_100')
+elseif strcmp(runset,'no_int_cov_100')
 
     if n_severity ~= 2
         error('The runset fix_R0 requires there to be only two severity levels')

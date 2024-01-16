@@ -6,10 +6,10 @@ orange = customcolormap([0 0.5 1], {'#000000','#EB7D00','#ffffff'});
 green = customcolormap([0 0.5 1], {'#000000','#69C988','#ffffff'});
 purple = customcolormap([0 0.5 1], {'#000000','#9966D9','#ffffff'});
 
-runsets = {'sb_int_find_opt_up_flu_1.5','sb_int_find_opt_up_flu_3.0','sb_int_find_opt_up_cov_3.0'};
-%runsets = {'ib_int_find_opt_up_flu_1.5','ib_int_find_opt_up_flu_3.0','ib_int_find_opt_up_cov_3.0'};
-%runsets = {'isb_int_find_opt_up_flu_1.5','isb_int_find_opt_up_flu_3.0','isb_int_find_opt_up_cov_3.0'};
-%runsets = {'ib_sev_int_find_opt_up_flu_1.5','ib_sev_int_find_opt_up_flu_3.0','ib_sev_int_find_opt_up_cov_3.0'};
+runsets = {'sb_int_find_opt_up_sFlu','sb_int_find_opt_up_pFlu','sb_int_find_opt_up_cov'};
+%runsets = {'ib_int_find_opt_up_sFlu','ib_int_find_opt_up_pFlu','ib_int_find_opt_up_cov'};
+%runsets = {'isb_int_find_opt_up_sFlu','isb_int_find_opt_up_pFlu','isb_int_find_opt_up_cov'};
+%runsets = {'ib_sev_int_find_opt_up_sFlu','ib_sev_int_find_opt_up_pFlu','ib_sev_int_find_opt_up_cov'};
 
 set(0,'defaultaxesfontsize',10)
 
@@ -88,36 +88,36 @@ l_year = find(sum(outputs(nu_itr,alpha_itr,up_itr,eff_itr,:, :),6) > 0, 1,'last'
 
 %% Define parameters for use in plots
 maxtime = 30*365;%length(outputs(1).uptake_str(1).nu_str(1).alpha_str(1).t);
-%N = parameters(1).pop_vec;
+N = parameters(1).pop_vec;
 
-% %% Get health econ outputs
-% [tot_hosp_prev, tot_inf_prev, thresh_int_cost, tot_sev_prev, prop_hosp_prev, prop_inf_prev, prop_sev_prev] = health_econ_module(runset);
-% 
-% opt_up = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
-% opt_thresh_cost = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
-% thresh_diff_from_a0 = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
-% R_0S = zeros(length(run_opts{1}),length(run_opts{2}));
-% 
-%  for nu_itr = 1:length(run_opts{1})
-%     
-% 
-%     %R_0S(nu_itr,alpha_itr)=parameters(nu_itr,alpha_itr).beta(2)/parameters(nu_itr,alpha_itr).gamma(2);
-% 
-%     for eff_itr = 1:length(run_opts{4})
-%         for alpha_itr = 1:length(run_opts{2})
-%             x = 0:0.05:1;
-%             TIC_interp = interp1(run_opts{3},squeeze(thresh_int_cost(nu_itr,alpha_itr, :,eff_itr)),x,'spline');
-%             [M, I] = max(thresh_int_cost(nu_itr,alpha_itr, :,eff_itr));
-%             %[N, J] = min(TIC_interp);
-%             opt_up(nu_itr,alpha_itr,eff_itr) = run_opts{3}(I)*100;
-%             if alpha_itr == 1
-%                 opt_up_ind_alpha_0 = I;
-%             end
-%             opt_thresh_cost(nu_itr,alpha_itr,eff_itr) = M;
-%             thresh_diff_from_a0(nu_itr,alpha_itr,eff_itr) = M-thresh_int_cost(nu_itr,alpha_itr,opt_up_ind_alpha_0,eff_itr);
-%         end
-%     end
-%  end
+%% Get health econ outputs
+[tot_hosp_prev, tot_inf_prev, thresh_int_cost, tot_sev_prev, prop_hosp_prev, prop_inf_prev, prop_sev_prev] = health_econ_module(runset);
+
+opt_up = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
+opt_thresh_cost = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
+thresh_diff_from_a0 = zeros(length(run_opts{1}),length(run_opts{2}),length(run_opts{4}));
+R_0S = zeros(length(run_opts{1}),length(run_opts{2}));
+
+ for nu_itr = 1:length(run_opts{1})
+    
+
+    %R_0S(nu_itr,alpha_itr)=parameters(nu_itr,alpha_itr).beta(2)/parameters(nu_itr,alpha_itr).gamma(2);
+
+    for eff_itr = 1:length(run_opts{4})
+        for alpha_itr = 1:length(run_opts{2})
+            x = 0:0.05:1;
+            TIC_interp = interp1(run_opts{3},squeeze(thresh_int_cost(nu_itr,alpha_itr, :,eff_itr)),x,'spline');
+            [M, I] = max(thresh_int_cost(nu_itr,alpha_itr, :,eff_itr));
+            %[N, J] = min(TIC_interp);
+            opt_up(nu_itr,alpha_itr,eff_itr) = run_opts{3}(I)*100;
+            if alpha_itr == 1
+                opt_up_ind_alpha_0 = I;
+            end
+            opt_thresh_cost(nu_itr,alpha_itr,eff_itr) = M;
+            thresh_diff_from_a0(nu_itr,alpha_itr,eff_itr) = M-thresh_int_cost(nu_itr,alpha_itr,opt_up_ind_alpha_0,eff_itr);
+        end
+    end
+ end
 
 [~, ~, thresh_int_cost, ~, ~, ~, ~, ~, ~, ~, ~] = health_econ_module(runset);
 
@@ -138,53 +138,53 @@ for nu_itr = 1:length(run_opts{1})
     end
 end
 
-% %% Heatmap of how the optimal uptake varies
-% if run_itr == 1 
-%     figure(1)
-%     tlo = tlo1;
-%     %ylabel(tlo,{'Seasonal Influenza'})
-% elseif run_itr == 2
-%     figure(2)
-%     tlo = tlo2;
-%     %ylabel(tlo,{'Pandemic Influenza'})
-% elseif run_itr == 3
-%     figure(3)
-%     tlo = tlo3;
-%     %ylabel(tlo,{'SARS-CoV-2'})
-% end
-% 
-% for eff_itr = 1:length(run_opts{4})
-%     nexttile(tlo)
-%     hm = heatmap(squeeze(opt_up(:,:,eff_itr)),'Colormap', blue, 'ColorLimits', [0 100],'GridVisible','off','CellLabelColor','none');
-% %         hm.XDisplayLabels = {'1','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','0'};
-% %         hm.YDisplayLabels = {'0','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','1'};
-%     hm.XDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
-%     hm.YDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
-%     hm.FontSize=8;
-%     hm.NodeChildren(3).YDir='normal'; 
-% 
-%     ylabel('Baseline probability, \nu')
-%     xlabel('Dependence on infector, \alpha')
-%     title(sprintf('%d%%', run_opts{4}(eff_itr)*100))
-%     s = struct(hm);
-%     s.XAxis.TickLabelRotation = 0; 
-% 
-%     axs = struct(gca); %ignore warning that this should be avoided
-%     cb = axs.Colorbar;
-%     cb.TickLabels = {'0%','20%','40%','60%','80%','100%'};
-% end
-%    
-% %ylabel(tlo,{'Symptom attenuating' ''})
-% %ylabel(tlo,{'Infection blocking' ''})
-% ylabel(tlo,{'Infection blocking' '(mild breakthrough infections)'})
-% 
-% title(tlo,'Efficacy')
+%% Heatmap of how the optimal uptake varies (Figs S25-S27)
+if run_itr == 1 
+    figure(1)
+    tlo = tlo1;
+    %ylabel(tlo,{'Seasonal Influenza'})
+elseif run_itr == 2
+    figure(2)
+    tlo = tlo2;
+    %ylabel(tlo,{'Pandemic Influenza'})
+elseif run_itr == 3
+    figure(3)
+    tlo = tlo3;
+    %ylabel(tlo,{'SARS-CoV-2'})
+end
+
+for eff_itr = 1:length(run_opts{4})
+    nexttile(tlo)
+    hm = heatmap(squeeze(opt_up(:,:,eff_itr)),'Colormap', blue, 'ColorLimits', [0 100],'GridVisible','off','CellLabelColor','none');
+%         hm.XDisplayLabels = {'1','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','0'};
+%         hm.YDisplayLabels = {'0','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','1'};
+    hm.XDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
+    hm.YDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
+    hm.FontSize=8;
+    hm.NodeChildren(3).YDir='normal'; 
+
+    ylabel('Baseline probability, \nu')
+    xlabel('Dependence on infector, \alpha')
+    title(sprintf('%d%%', run_opts{4}(eff_itr)*100))
+    s = struct(hm);
+    s.XAxis.TickLabelRotation = 0; 
+
+    axs = struct(gca); %ignore warning that this should be avoided
+    cb = axs.Colorbar;
+    cb.TickLabels = {'0%','20%','40%','60%','80%','100%'};
+end
+   
+%ylabel(tlo,{'Symptom attenuating' ''})
+%ylabel(tlo,{'Infection blocking' ''})
+ylabel(tlo,{'Infection blocking' '(mild breakthrough infections)'})
+
+title(tlo,'Efficacy')
 
 
 m = max(thresh_int_cost(:,:,51,:),[],'all');
 
 
-%% Heatmap showing TIC for 50% uptake
+%% Heatmap showing TIC for 50% uptake (Figs S22-S24)
 if run_itr == 1 
     figure(4)
     tlo = tlo4;
@@ -234,66 +234,10 @@ ylabel(tlo,{'Infection blocking' '(mild breakthrough infections)'})
 
 title(tlo,'Efficacy')
 
-% %% Heatmap showing cases prevented for 50% uptake
-% if run_itr == 1 
-%     figure(10)
-%     tlo = tlo10;
-%     CL = [0 0.6];
-%     ylabel(tlo,{'Seasonal Influenza'})
-% elseif run_itr == 2
-%     figure(11)
-%     tlo = tlo11;
-%     CL = [0 0.3];%[0 1000];%[0 1400];
-%     ylabel(tlo,{'Pandemic Influenza'})
-% elseif run_itr == 3
-%     figure(12)
-%     tlo = tlo12;
-%     CL = [0 0.3];%[0 6000];
-%     ylabel(tlo,{'SARS-CoV-2'})
-% end
-% 
-% 
-% for eff_itr = 1:length(run_opts{4})
-%     nexttile(tlo)
-% 
-%     hm = heatmap(tot_inf_prev(:,:,eff_itr,run_itr)./N,'Colormap', blue,'ColorLimits',[0 1],'GridVisible','off','CellLabelColor','none');
-% %         hm.XDisplayLabels = {'1','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','0'};
-% %         hm.YDisplayLabels = {'0','','','','','','','','','','','','','','','','','','','','','','','','','0.5','','','','','','','','','','','','','','','','','','','','','','','','','1'};
-%     hm.XDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
-%     hm.YDisplayLabels = {'0','','','','','','','','','','0.5','','','','','','','','','','1'};
-%     hm.FontSize=8;
-%     hm.NodeChildren(3).YDir='normal'; 
-% 
-%     ylabel('Baseline probability, \nu')
-%     xlabel('Dependence on infector, \alpha')
-%     title(sprintf('%d%%', run_opts{4}(eff_itr)*100))
-%     s = struct(hm);
-%     s.XAxis.TickLabelRotation = 0; 
-% 
-%     axs = struct(gca); %ignore warning that this should be avoided
-%     cb = axs.Colorbar;
-%     cb.TickLabels = {'0%','20%','40%','60%','80%','100%'};
-% 
-% %     axs = struct(gca); %ignore warning that this should be avoided
-% %     cb = axs.Colorbar;
-% %     cb.TickLabels = {'1','10','100','1000','10000'};
-% % 
-% %     %
-% %     set(gca,'ColorScaling','log')
-% %     set(gca,'ColorLimits',[0 9.22])
-% 
-% end
-% 
-% ylabel(tlo,{'Symptom attenuating' ''})
-% %ylabel(tlo,{'Infection blocking' ''})
-% %ylabel(tlo,{'Infection blocking' '(mild breakthrough infections)'})
-% 
-% 
-% title(tlo,'Efficacy')
 
 
 
-%% Heatmap showing the difference between the maximum TIC and TIC for opt up when alpha=0
+%% Heatmap showing the difference between the maximum TIC and TIC for opt up when alpha=0 (Figs S28-S30)
 if run_itr == 1 
     figure(7)
     tlo = tlo7;

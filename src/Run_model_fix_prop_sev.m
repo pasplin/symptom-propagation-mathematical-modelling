@@ -1,7 +1,16 @@
-function Run_model_fix_prop_sev(int_itr,param_itr)
-
 %% Script for running ODE model with interventions 
 % Here nu is chosen to fix the proportion of cases that are severe
+% If wanting to generate data for all intervention options and parameter
+% sets, run as:
+% for ii = 1:3
+%     for jj = 1:3
+%         Run_model_fix_prop_sev(ii,jj)
+%     end
+% end
+
+% Generates data for figs 5,7,8,S5-S9
+
+function Run_model_fix_prop_sev(int_itr,param_itr)
 
 tic
 

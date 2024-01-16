@@ -7,17 +7,20 @@ tic
 
 %% Set the runset for the model
 
-runsets = {'sb_int_find_opt_up_flu_1.5','sb_int_find_opt_up_flu_3.0','sb_int_find_opt_up_cov_3.0', 'ib_int_find_opt_up_flu_1.5','ib_int_find_opt_up_flu_3.0','ib_int_find_opt_up_cov_3.0', 'isb_int_find_opt_up_flu_1.5','isb_int_find_opt_up_flu_3.0','isb_int_find_opt_up_cov_3.0','isb_test_duration'};
-%runsets = {'sb_vig_flu_1.5','sb_vig_flu_3.0','sb_vig_cov_3.0','ib_vig_flu_1.5','ib_vig_flu_3.0','ib_vig_cov_3.0','isb_vig_flu_1.5','isb_vig_flu_3.0','isb_vig_cov_3.0'};
+%Runsets for interventions with fixed nu - generates data for figs S10 & S11
+runsets = {'sb_vig_sFlu','sb_vig_pFlu','sb_vig_cov','ib_vig_sFlu','ib_vig_pFlu','ib_vig_cov','isb_vig_sFlu','isb_vig_pFlu','isb_vig_cov'};
+
+%Runsets for intervention heatmaps  - generates data for figs S22-S30
+%runsets = {'sb_int_find_opt_up_sFlu','sb_int_find_opt_up_pFlu','sb_int_find_opt_up_cov', 'ib_int_find_opt_up_sFlu','ib_int_find_opt_up_pFlu','ib_int_find_opt_up_cov', 'isb_int_find_opt_up_sFlu','isb_int_find_opt_up_pFlu','isb_int_find_opt_up_cov','isb_test_duration'};
 
 
 runset = runsets{job_ID};
 
-if strcmp(runset, 'sb_int_find_opt_up_flu_1.5')||strcmp(runset, 'sb_int_find_opt_up_flu_3.0')||strcmp(runset, 'sb_int_find_opt_up_cov_3.0')
+if strcmp(runset, 'sb_int_find_opt_up_sFlu')||strcmp(runset, 'sb_int_find_opt_up_pFlu')||strcmp(runset, 'sb_int_find_opt_up_cov')
     int = "sb";
-elseif strcmp(runset, 'ib_int_find_opt_up_flu_1.5')||strcmp(runset, 'ib_int_find_opt_up_flu_3.0')||strcmp(runset, 'ib_int_find_opt_up_cov_3.0')
+elseif strcmp(runset, 'ib_int_find_opt_up_sFlu')||strcmp(runset, 'ib_int_find_opt_up_pFlu')||strcmp(runset, 'ib_int_find_opt_up_cov')
     int = "ib";
-elseif strcmp(runset, 'isb_int_find_opt_up_flu_1.5')||strcmp(runset, 'isb_int_find_opt_up_flu_3.0')||strcmp(runset, 'isb_int_find_opt_up_cov_3.0')
+elseif strcmp(runset, 'isb_int_find_opt_up_sFlu')||strcmp(runset, 'isb_int_find_opt_up_pFlu')||strcmp(runset, 'isb_int_find_opt_up_cov')
     int = "isb";
 elseif strcmp(runset, 'isb_test_duration')
     int = "isb";
@@ -41,7 +44,7 @@ maxtime = num_years*365;
 init_sev = 1:n_severity; %Sets an initial case in each of the severity levels
 
 %Set up output array
-if strcmp(runset,'sb_vig_flu_1.5')||strcmp(runset,'sb_vig_flu_3.0')||strcmp(runset,'sb_vig_cov_3.0')||strcmp(runset,'ib_vig_flu_1.5')||strcmp(runset,'ib_vig_flu_3.0')||strcmp(runset,'ib_vig_cov_3.0')||strcmp(runset,'isb_vig_flu_1.5')||strcmp(runset,'isb_vig_flu_3.0')||strcmp(runset,'isb_vig_cov_3.0')
+if strcmp(runset,'sb_vig_sFlu')||strcmp(runset,'sb_vig_pFlu')||strcmp(runset,'sb_vig_cov')||strcmp(runset,'ib_vig_sFlu')||strcmp(runset,'ib_vig_pFlu')||strcmp(runset,'ib_vig_cov')||strcmp(runset,'isb_vig_sFlu')||strcmp(runset,'isb_vig_pFlu')||strcmp(runset,'isb_vig_cov')
     S = zeros(length(run_opts{1}), length(run_opts{2}), length(run_opts{3}), length(run_opts{4}), num_years*365);
     V = zeros(length(run_opts{1}), length(run_opts{2}), length(run_opts{3}), length(run_opts{4}), num_years*365);
 
@@ -75,21 +78,21 @@ for nu_itr = 1:length(run_opts{1})
                 ICs.V = ICs.S*para(alpha_itr).u;
                 ICs.S = ICs.S - ICs.V;
 
-                if strcmp(runset,'sb_vig_flu_1.5')||strcmp(runset,'sb_vig_flu_3.0')||strcmp(runset,'sb_vig_cov_3.0')
+                if strcmp(runset,'sb_vig_sFlu')||strcmp(runset,'sb_vig_pFlu')||strcmp(runset,'sb_vig_cov')
                     [Classes] = ODE_SEIR_model_sb_int(para(alpha_itr),ICs,maxtime);
                     S(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.S;
                     V(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.V;
                     I(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t), :) = Classes.I;
                     R(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t), :) = Classes.R;
                 
-                elseif strcmp(runset,'ib_vig_flu_1.5')||strcmp(runset,'ib_vig_flu_3.0')||strcmp(runset,'ib_vig_cov_3.0')
+                elseif strcmp(runset,'ib_vig_sFlu')||strcmp(runset,'ib_vig_pFlu')||strcmp(runset,'ib_vig_cov')
                     [Classes] = ODE_SEIR_model_ib_int(para(alpha_itr),ICs,maxtime);
                     S(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.S;
                     V(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.V;
 
                     I(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t), :) = Classes.I;
                     R(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t), :) = Classes.R;
-                elseif strcmp(runset,'isb_vig_flu_1.5')||strcmp(runset,'isb_vig_flu_3.0')||strcmp(runset,'isb_vig_cov_3.0')
+                elseif strcmp(runset,'isb_vig_sFlu')||strcmp(runset,'isb_vig_pFlu')||strcmp(runset,'isb_vig_cov')
                     [Classes] = ODE_SEIR_model_isb_int(para(alpha_itr),ICs,maxtime);
                     S(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.S;
                     V(nu_itr, alpha_itr, uptake_itr, eff_itr, 1:length(Classes.t)) = Classes.V;
@@ -149,7 +152,7 @@ end
 %% Save parameters and outputs to results file for plots
 
 filename = ['model_output_' runset '.mat'];
-if strcmp(runset,'sb_vig_flu_1.5')||strcmp(runset,'sb_vig_flu_3.0')||strcmp(runset,'sb_vig_cov_3.0')||strcmp(runset,'ib_vig_flu_1.5')||strcmp(runset,'ib_vig_flu_3.0')||strcmp(runset,'ib_vig_cov_3.0')||strcmp(runset,'isb_vig_flu_1.5')||strcmp(runset,'isb_vig_flu_3.0')||strcmp(runset,'isb_vig_cov_3.0')
+if strcmp(runset,'sb_vig_sFlu')||strcmp(runset,'sb_vig_pFlu')||strcmp(runset,'sb_vig_cov')||strcmp(runset,'ib_vig_sFlu')||strcmp(runset,'ib_vig_pFlu')||strcmp(runset,'ib_vig_cov')||strcmp(runset,'isb_vig_sFlu')||strcmp(runset,'isb_vig_pFlu')||strcmp(runset,'isb_vig_cov')
     save(filename, 'parameters','S','V', 'I', 'R')
 else
     save(filename, 'parameters', 'outputs', 'duration')

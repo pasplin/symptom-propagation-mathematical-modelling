@@ -12,11 +12,11 @@ yellow = {[255,191,0]./255};
 
 N =60287953;
 
-runsets = {'no_int_flu_1.5','sb_vig_flu_1.5','ib_vig_flu_1.5','isb_vig_flu_1.5','no_int_flu_3.0','sb_vig_flu_3.0','ib_vig_flu_3.0','isb_vig_flu_3.0','no_int_cov_3.0','sb_vig_cov_3.0','ib_vig_cov_3.0','isb_vig_cov_3.0'};
+runsets = {'no_int_sFlu','sb_vig_sFlu','ib_vig_sFlu','isb_vig_sFlu','no_int_pFlu','sb_vig_pFlu','ib_vig_pFlu','isb_vig_pFlu','no_int_cov','sb_vig_cov','ib_vig_cov','isb_vig_cov'};
 
 
 int_opts = {'no_int','sb','ib','isb'};
-param_opts = {'flu_1.5','flu_3.0','cov_3.0'};
+param_opts = {'sFlu','pFlu','cov'};
 
 num_years = 8;
 
@@ -245,43 +245,13 @@ for param_itr = 1:length(param_opts)
             end
         end
     end
-    
-
-%% Plot bars 
-% for up_itr = 1:2
-%     nexttile(tlo1,param_itr+(up_itr-1)*3)
-% 
-%     b = bar(tot_inf_array(:,:,param_itr,up_itr)./N);
-%     b(1).FaceColor = blue{3};
-%     b(2).FaceColor = 'none';
-%     b(2).EdgeColor = blue{3};
-%     b(2).LineWidth = 1.5;
-%     ylim([0 1])
-%     set(gca, 'XTickLabel', {'No','SA' 'IB','IB\_MB'})
-% 
-%     if up_itr == 1
-%         if param_itr == 1
-%             ylabel('Uptake 50%')
-%            title({'Seasonal Influenza'})
-%         elseif param_itr == 2
-%             title({'Pandemic Influenza'})
-%         else 
-%             title({'SARS-CoV-2'})
-%         end
-%     else
-%         if param_itr == 3
-%         label_h = ylabel('Uptake 90%');
-%         label_h.Position(1) = 5.6;
-%         end
-%     end
-% end
-% 
+   
 
 end
 
 % ylabel(tlo1, 'Total proportion infected')
 % 
-%% Create arrays for bar plots - compartments
+%% Create arrays for bar plots - compartments (Fig S10)
 figure(5)
 tlo2 = tiledlayout(3,3);
 set(gcf,'units','inch','position',[0,0,10,9])
@@ -290,29 +260,29 @@ tlo2.Padding = 'compact';
 
 % tot_sev_array = zeros(length(int_opts), 2,length(param_opts),2);
 for param_itr = 1:length(param_opts)
-%     for up_itr = 1:2
-%         for alpha_itr = 1:2
-%             for int_itr = 1:length(int_opts)
-%     
-%                 runset =  runsets{(param_itr-1)*4 + int_itr};
-%                 if int_itr == 1
-%                     load(['model_output_' runset '.mat'],'outputs')
-%                 else
-%                      load(['model_output_' runset '.mat'],'I','R')
-%                 end
-%         
-%                 if int_itr == 1
-%                     alpha_opts = [3,9];
-%                     tot_sev_array(int_itr,alpha_itr,param_itr, up_itr)  = outputs(1,alpha_opts(alpha_itr)).R(end,:,2);
-%                 else
-%                     s = sum(R(1,alpha_itr, up_itr,1,:,:),6);
-%                     ind = find(s>0,1,'last');
-%                     tot_sev_array(int_itr,alpha_itr,param_itr, up_itr) = R(1,alpha_itr, up_itr,1,ind,2);
-%                 end
-% 
-%             end
-%         end
-%     end
+    for up_itr = 1:2
+        for alpha_itr = 1:2
+            for int_itr = 1:length(int_opts)
+    
+                runset =  runsets{(param_itr-1)*4 + int_itr};
+                if int_itr == 1
+                    load(['model_output_' runset '.mat'],'outputs')
+                else
+                     load(['model_output_' runset '.mat'],'I','R')
+                end
+        
+                if int_itr == 1
+                    alpha_opts = [3,9];
+                    tot_sev_array(int_itr,alpha_itr,param_itr, up_itr)  = outputs(1,alpha_opts(alpha_itr)).R(end,:,2);
+                else
+                    s = sum(R(1,alpha_itr, up_itr,1,:,:),6);
+                    ind = find(s>0,1,'last');
+                    tot_sev_array(int_itr,alpha_itr,param_itr, up_itr) = R(1,alpha_itr, up_itr,1,ind,2);
+                end
+
+            end
+        end
+    end
     
 
 %% Plot bars 
@@ -369,7 +339,7 @@ end
 end
 %ylabel(tlo2, 'Proportion of population')
 
-%% Create arrays for bar plots - TIC
+%% Create arrays for bar plots - TIC (Fig S11)
 figure(6)
 tlo3 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])

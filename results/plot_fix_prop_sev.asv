@@ -322,7 +322,7 @@ end
 
 end
 
-%% Create bar plot - Threshold unit intervention cost (Fig 7)
+%% Create bar plot - Threshold unit intervention cost(F
 figure(6)
 tlo3 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])
@@ -386,7 +386,7 @@ for up_itr = 1:2
 end
 end
 
-%% Create bar plots - duration (Fig S9)
+%% Create arrays for bar plots - duration
 figure(7)
 tlo7 = tiledlayout(2,3);
 set(gcf,'units','inch','position',[0,0,10,6])
@@ -437,7 +437,7 @@ for up_itr = 1:2
 end
 end
 
-%% Create bar plots - peak prevalence (Fig S8)
+%% Create arrays for bar plots - peak prevalence
 figure(8)
 tlo8 = tiledlayout(3,3);
 set(gcf,'units','inch','position',[0,0,10,9])
@@ -504,7 +504,7 @@ set(L,'Position', newPosition,'Units', newUnits);
 
 legend boxoff
 
-%% TIC vs uptake plots (Fig 8)
+%% TIC vs uptake plots
 figure(9)
 tlo9 = tiledlayout(3,3);
 set(gcf,'units','inch','position',[0,0,10,9])
@@ -562,7 +562,58 @@ for param_itr = 1:length(param_opts)
     end
 end
 
-      
+%% Severe cases prevented vs uptake plots
+% figure(10)
+% tlo10 = tiledlayout(3,3);
+% set(gcf,'units','inch','position',[0,0,10,9])
+% tlo10.TileSpacing = 'compact';
+% tlo10.Padding = 'compact';
+% 
+% 
+% for param_itr = 1:length(param_opts)
+%     for int_itr = 2:length(int_opts)
+%         nexttile(tlo10)
+% 
+%             plot(run_opts{3}(2:end),squeeze(sev_inf_array(int_itr-1, 1, param_itr, 2:end))./N,'Color',red{2})
+%             hold on
+%             plot(run_opts{3}(2:end),squeeze(sev_inf_array(int_itr-1, 2, param_itr, 2:end))./N,'Color',red{1},'LineStyle','--')
+%             hold off
+% 
+%             legend('\alpha=0.2','\alpha=0.8','Location','northwest')
+%             ylim([0 1])
+% 
+%             xticklabels({'0%','50%','100%'})
+%             xlabel('Uptake')
+% 
+%             if int_itr == 2
+%                 ylabel('Severe infections prevented')
+%             end
+%         
+%             if param_itr == 1
+%                 if int_itr == 2
+%                    title({'Symptom-attenuating' ''})
+%                    
+%                 elseif int_itr == 3
+%                     title({'Infection-blocking' ''})
+%                 elseif int_itr == 4
+%                     title({'Infection-blocking' '(mild breakthroughs)'})
+%                     label_h = ylabel('Seasonal Influenza','Rotation',-90,'FontWeight','bold');
+%                     label_h.Position(1) = 1.05;
+%                 end
+% 
+%             else
+%                 if int_itr == 4
+%                     if param_itr == 2
+%                         label_h = ylabel('Pandemic Influenza','Rotation',-90,'FontWeight','bold');
+%                     elseif param_itr == 3
+%                         label_h = ylabel('SARS-CoV-2','Rotation',-90,'FontWeight','bold');
+%                     end
+%                     label_h.Position(1) = 1.05;
+%                 end
+%             end
+%     end
+% end
+%             
 
 %% Function to calculate health economic outputs from data file in order to generate TICs
 function [QALYs, hosp_cost] = Calc_HE(inf_array, dis_rate,num_years, param_itr)

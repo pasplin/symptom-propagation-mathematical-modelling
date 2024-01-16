@@ -1,7 +1,7 @@
-%% Compare number of severe cases between SA and IB intervention
+%% Compare number of severe cases between SA and IB intervention - Fig 6
 
 interventions = {'sb', 'ib'};
-param_sets = {'flu_1.5','flu_3.0','cov_3.0'};
+param_sets = {'sFlu','pFlu','cov'};
 
 up_opts = [51,71,91];
 

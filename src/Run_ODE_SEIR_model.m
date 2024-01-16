@@ -2,8 +2,12 @@ clear
 %% Script for running ODE model (no interventions)
 
 %% Set the runset for the model
-%runsets = {'no_int_flu_1.5','no_int_flu_3.0','no_int_cov_3.0'};
-runsets = {'no_int_flu_1.5_100','no_int_flu_3.0_100','no_int_cov_3.0_100'};
+
+%Data used in Figs 3 & S4 (alpha increments of 0.1)
+%runsets = {'no_int_sFlu','no_int_pFlu','no_int_cov'};
+
+%Data used in Fig 4 (alpha increments of 0.05)
+runsets = {'no_int_sFlu_100','no_int_pFlu_100','no_int_cov_100'};
 
 %Set the number of symptom severity levels 
 n_severity = 2;
@@ -45,7 +49,6 @@ outputs(ii,:) = Classes;
 parameters(ii,:) = para;
 end
 %% Save parameters and outputs to results file for plots
-%filename = ['C:\Users\Mike Asplin\Documents\symptom-severity-propagation-health-econ\results\model_output_' runset '.mat'];
 filename = ['model_output_' runset '.mat'];
 save(filename, 'parameters', 'outputs')
 
