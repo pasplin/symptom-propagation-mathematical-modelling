@@ -33,6 +33,25 @@ elseif strcmp(runset,'no_int_pFlu')||strcmp(runset,'no_int_cov')
     %Values of alpha
     run_opts{2}=0:0.1:1;
 
+elseif strcmp(runset,'no_int_sFlu_fix_beta')
+    %Value of beta_sev that is fixed for each set of runs
+    run_opts{1} = 0.3;
+
+    %Values of alpha
+    run_opts{2}=0:0.1:1;
+elseif strcmp(runset,'no_int_pFlu_fix_beta')
+    %Value of beta_sev that is fixed for each set of runs
+    run_opts{1} = 0.5;
+
+    %Values of alpha
+    run_opts{2}=0:0.1:1;
+elseif strcmp(runset,'no_int_cov_fix_beta')
+    %Value of beta_sev that is fixed for each set of runs
+    run_opts{1} = 0.3;
+
+    %Values of alpha
+    run_opts{2}=0:0.1:1;
+
 %% Runset for intervention comparison plots, two values of alpha, nu chosen
 %% to fix proportion of cases that are severe
 elseif contains(runset, 'fix_prop_sev')

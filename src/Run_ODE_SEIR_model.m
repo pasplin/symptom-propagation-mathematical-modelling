@@ -7,7 +7,10 @@ clear
 %runsets = {'no_int_sFlu','no_int_pFlu','no_int_cov'};
 
 %Data used in Fig 4 (alpha increments of 0.05)
-runsets = {'no_int_sFlu_100','no_int_pFlu_100','no_int_cov_100'};
+%runsets = {'no_int_sFlu_100','no_int_pFlu_100','no_int_cov_100'};
+
+%Data used in 
+runsets = {'no_int_sFlu_fix_beta','no_int_pFlu_fix_beta','no_int_cov_fix_beta'};
 
 %Set the number of symptom severity levels 
 n_severity = 2;

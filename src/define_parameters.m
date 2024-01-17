@@ -250,6 +250,85 @@ elseif strcmp(runset,'no_int_cov')
     
     %Severity dependent transmission rates
     para(opts_itr).beta = [beta_mild,ratio*beta_mild];
+elseif strcmp(runset,'no_int_sFlu_fix_beta') || strcmp(runset,'no_int_pFlu_fix_beta')
+    
+    ratio = 2;
+    para(opts_itr).gamma=[1/5 1/7];
+
+    nu = 0.2;%fixed_val;
+    para(opts_itr).nu = [1-nu, nu];
+
+    %Get the value of R0 for this runset
+    beta_sev = fixed_val;
+
+    %Value of alpha for this run
+    para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
+    
+    %Severity dependent transmission rates
+    para(opts_itr).beta = [beta_sev/ratio,beta_sev];
+
+    %% Caculate R0
+    % Initialise Next Generation Matrix for calculating R0
+    K = zeros(n_severity);
+    
+    % Fill in the matrix with the average number of type u infections caused by
+    % an individual of type v
+    for u = 1:2
+        for v = 1:2
+            if u==v
+                K(u,v) = para(opts_itr).beta(v)*(1-(1-para(opts_itr).alpha(1))*(1-para(opts_itr).nu(u)))/para(opts_itr).gamma(v);
+            else
+                K(u,v) = para(opts_itr).beta(v)*(1-para(opts_itr).alpha(1))*para(opts_itr).nu(u)/para(opts_itr).gamma(v);
+            end
+        end
+    end
+    
+    %Calculate the eigenvalues
+    [~,D]=eig(K);
+    
+    %Set R0 to be the dominant eigenvalue
+    para(opts_itr).R0 = max(abs(D),[],'all');
+
+elseif strcmp(runset,'no_int_cov_fix_beta')
+    
+    ratio = 4;
+    para(opts_itr).gamma=[1/7 1/14];
+
+    para(opts_itr).epsilon = 0.2;
+
+    nu = 0.2;
+    para(opts_itr).nu = [1-nu, nu];
+
+    %Get the value of R0 for this runset
+    beta_sev = fixed_val;
+
+    %Value of alpha for this run
+    para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
+    
+    %Severity dependent transmission rates
+    para(opts_itr).beta = [beta_sev/ratio,beta_sev];
+
+    %% Caculate R0
+    % Initialise Next Generation Matrix for calculating R0
+    K = zeros(n_severity);
+    
+    % Fill in the matrix with the average number of type u infections caused by
+    % an individual of type v
+    for u = 1:2
+        for v = 1:2
+            if u==v
+                K(u,v) = para(opts_itr).beta(v)*(1-(1-para(opts_itr).alpha(1))*(1-para(opts_itr).nu(u)))/para(opts_itr).gamma(v);
+            else
+                K(u,v) = para(opts_itr).beta(v)*(1-para(opts_itr).alpha(1))*para(opts_itr).nu(u)/para(opts_itr).gamma(v);
+            end
+        end
+    end
+    
+    %Calculate the eigenvalues
+    [~,D]=eig(K);
+    
+    %Set R0 to be the dominant eigenvalue
+    para(opts_itr).R0 = max(abs(D),[],'all');
 elseif strcmp(runset,'no_int_sFlu_100')
 
     if n_severity ~= 2
