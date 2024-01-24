@@ -29,9 +29,9 @@ These scripts call the following functions:
 
 
 ### results
-* plot_no_int: Generates no intervention figures - Figs 3,4,S4
-* plot_vig: Generates intervention figures (fixed value of nu) - Figs S10, S11
-* plot_fix_prop_sev: Generates intervention figures (fixed proportion of cases that are severe) - Figs 5,7,8, S5-S9
+* plot_no_int: Generates no intervention figures - Figs 3,4,S1,S2,S6
+* plot_vig: Generates intervention figures (fixed value of nu) - Figs S12, S13
+* plot_fix_prop_sev: Generates intervention figures (fixed proportion of cases that are severe) - Figs 5,7,8, S7-S11
 * plot_int_comp: Generates figures comparing between SA and IB interventions - Fig 6
-* plot_opt_up_hm: Generates supplementary heatmaps (e.g. most cost-effective uptake) - Figs S22-S30
+* plot_opt_up_hm: Generates supplementary heatmaps (e.g. most cost-effective uptake) - Figs S24-S32
 * legend_creation: Generates figure legends
