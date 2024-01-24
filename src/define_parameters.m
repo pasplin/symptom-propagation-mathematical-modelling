@@ -259,13 +259,13 @@ elseif strcmp(runset,'no_int_sFlu_fix_beta') || strcmp(runset,'no_int_pFlu_fix_b
     para(opts_itr).nu = [1-nu, nu];
 
     %Get the value of R0 for this runset
-    beta_sev = fixed_val;
+    beta_mild = fixed_val;
 
     %Value of alpha for this run
     para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
     
     %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_sev/ratio,beta_sev];
+    para(opts_itr).beta = [beta_mild,beta_mild*ratio];
 
     %% Caculate R0
     % Initialise Next Generation Matrix for calculating R0
@@ -300,13 +300,13 @@ elseif strcmp(runset,'no_int_cov_fix_beta')
     para(opts_itr).nu = [1-nu, nu];
 
     %Get the value of R0 for this runset
-    beta_sev = fixed_val;
+    beta_mild = fixed_val;
 
     %Value of alpha for this run
     para(opts_itr).alpha = run_opts{2}(opts_itr)*ones(n_severity,1);
     
     %Severity dependent transmission rates
-    para(opts_itr).beta = [beta_sev/ratio,beta_sev];
+    para(opts_itr).beta = [beta_mild,beta_mild*ratio];
 
     %% Caculate R0
     % Initialise Next Generation Matrix for calculating R0

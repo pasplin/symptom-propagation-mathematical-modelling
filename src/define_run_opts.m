@@ -35,19 +35,19 @@ elseif strcmp(runset,'no_int_pFlu')||strcmp(runset,'no_int_cov')
 
 elseif strcmp(runset,'no_int_sFlu_fix_beta')
     %Value of beta_sev that is fixed for each set of runs
-    run_opts{1} = 0.3;
+    run_opts{1} = 0.221;
 
     %Values of alpha
     run_opts{2}=0:0.1:1;
 elseif strcmp(runset,'no_int_pFlu_fix_beta')
     %Value of beta_sev that is fixed for each set of runs
-    run_opts{1} = 0.5;
+    run_opts{1} = 0.441;
 
     %Values of alpha
     run_opts{2}=0:0.1:1;
 elseif strcmp(runset,'no_int_cov_fix_beta')
     %Value of beta_sev that is fixed for each set of runs
-    run_opts{1} = 0.3;
+    run_opts{1} = 0.179;
 
     %Values of alpha
     run_opts{2}=0:0.1:1;

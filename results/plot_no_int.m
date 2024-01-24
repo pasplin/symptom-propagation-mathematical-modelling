@@ -347,7 +347,7 @@ for run_itr = 1:length(runsets)
     if run_itr == 1
     ylabel('Peak prevalence')
     end
-    ylim([0 0.31])
+    ylim([0 0.5])
 
 %% Plot R0 against alpha - bar (Fig
 nexttile(tlo3)
@@ -363,7 +363,7 @@ if run_itr == 1
     else
         title('SARS-CoV-2')
 end
-ylim([0 5])
+ylim([0 10.1])
 
 %% Plot final outbreak size against alpha - line (Fig S4)
 nexttile(tlo4)
@@ -402,6 +402,7 @@ xlabel('Dependence on infector, \alpha')
 if run_itr == 1
     ylabel('Duration (days)')
 end
+%ylim([180 600])
 
 end
 end
